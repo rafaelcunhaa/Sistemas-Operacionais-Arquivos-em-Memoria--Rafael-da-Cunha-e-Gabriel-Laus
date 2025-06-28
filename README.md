@@ -1,1 +1,1 @@
-# Sistemas-Operacionais-Mini-Sistema-de-Arquivos-em-Mem-ria---Rafael-da-Cunha-e-Gabriel-Laus
+# Sistemas-Operacionais-Arquivos-em-Memoria--Rafael-da-Cunha-e-Gabriel-Laus
