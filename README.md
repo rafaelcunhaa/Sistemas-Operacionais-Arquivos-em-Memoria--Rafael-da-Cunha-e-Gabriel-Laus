@@ -7,11 +7,6 @@ Curso: Ciência da Computação – 5º Período
 
 ## 🛠️ Como compilar e executar
 
-### Pré-requisitos
-
-- Ambiente Linux (Ubuntu, WSL ou VM)
-- GCC instalado
-
 ### Compilação
 
 ```bash
