@@ -216,7 +216,10 @@ int main() {
         else if (sscanf(comando, "cd %s", arg1) == 1) cd(arg1);
         else if (strcmp(comando, "ls") == 0) ls();
         else if (sscanf(comando, "touch %s", arg1) == 1) touch(arg1);
-        else if (sscanf(comando, "echo %s %[^"]", arg1, arg2) >= 1) echo(arg1, strchr(comando, ' ') + strlen(arg1) + 2);
+        else if (strncmp(comando, "echo ", 5) == 0) {
+                sscanf(comando + 5, "%s %[^\n]", arg1, arg2);
+                echo(arg1, arg2);
+                }
         else if (sscanf(comando, "cat %s", arg1) == 1) cat(arg1);
         else if (sscanf(comando, "rm %s", arg1) == 1) rm(arg1);
         else if (sscanf(comando, "chmod %d %s", &contador_id, arg1) == 2) chmod_simples(arg1, contador_id);
