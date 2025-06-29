@@ -1,6 +1,6 @@
 /*
- * Mini Sistema de Arquivos em Memória - COMPLETO
- * Autor: Rafael Cunha (exemplo)
+ * Mini Sistema de Arquivos em Memória
+ * Autor: Rafael Cunha e Gabriel Beltrao
  * Compilar com: gcc -o mini_fs mini_fs.c
  */
 
