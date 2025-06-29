@@ -9,6 +9,7 @@
 #include <string.h>
 #include <time.h>
 
+// Definições de limites
 #define MAX_NOME 50
 #define MAX_ARQUIVOS 100
 #define MAX_CONTEUDO 1024
@@ -16,14 +17,17 @@
 #define MAX_BLOCOS 10000
 #define TAM_BLOCO 64
 
+// Tipos de arquivos simulados
 typedef enum { NUMERICO, CARACTERE, BINARIO, PROGRAMA } TipoArquivo;
 
+// Estrutura de permissões RWX usando bitfields
 typedef struct {
     int read : 1;
     int write : 1;
     int execute : 1;
 } Permissao;
 
+// Estrutura do File Control Block (FCB) simulado
 typedef struct {
     char nome[MAX_NOME];
     int tamanho;
@@ -36,13 +40,14 @@ typedef struct {
     int num_blocos;
 } Arquivo;
 
+// Estrutura de diretório com suporte a subdiretórios e arquivos
 typedef struct Diretorio {
     char nome[MAX_NOME];
     Arquivo* arquivos[MAX_ARQUIVOS];
     int qtd_arquivos;
     struct Diretorio* subdirs[MAX_DIRETORIOS];
     int qtd_subdirs;
-    struct Diretorio* pai;
+    struct Diretorio* pai;    // Ponteiro para o diretório pai
 } Diretorio;
 
 Diretorio* raiz;
@@ -52,6 +57,7 @@ char disco[MAX_BLOCOS * TAM_BLOCO];
 int blocos_livres[MAX_BLOCOS];
 char usuario_atual[MAX_NOME] = "admin";
 
+// Inicializa o sistema de arquivos em memória
 void init_fs() {
     raiz = (Diretorio*)malloc(sizeof(Diretorio));
     strcpy(raiz->nome, "/");
@@ -62,6 +68,7 @@ void init_fs() {
     for (int i = 0; i < MAX_BLOCOS; i++) blocos_livres[i] = 1;
 }
 
+// Procura e aloca o primeiro bloco livre
 int alocar_bloco() {
     for (int i = 0; i < MAX_BLOCOS; i++) {
         if (blocos_livres[i]) {
@@ -72,6 +79,7 @@ int alocar_bloco() {
     return -1;
 }
 
+// Cria um novo diretório dentro do diretório atual
 void mkdir_simples(char nome[]) {
     Diretorio* novo = malloc(sizeof(Diretorio));
     strcpy(novo->nome, nome);
@@ -82,6 +90,7 @@ void mkdir_simples(char nome[]) {
     printf("Diretório '%s' criado.\n", nome);
 }
 
+// Altera o diretório atual
 void cd(char nome[]) {
     if (strcmp(nome, "..") == 0 && atual->pai != NULL) {
         atual = atual->pai;
@@ -96,6 +105,7 @@ void cd(char nome[]) {
     }
 }
 
+// Lista diretórios e arquivos no diretório atual
 void ls() {
     printf("Diretório atual: %s\n", atual->nome);
     for (int i = 0; i < atual->qtd_subdirs; i++) {
@@ -106,6 +116,7 @@ void ls() {
     }
 }
 
+// Cria um arquivo vazio com metadados iniciais
 void touch(char nome[]) {
     Arquivo* arq = malloc(sizeof(Arquivo));
     strcpy(arq->nome, nome);
@@ -122,6 +133,7 @@ void touch(char nome[]) {
     printf("Arquivo '%s' criado.\n", nome);
 }
 
+// Escreve conteúdo em um arquivo, simulando alocação de blocos
 void echo(char nome[], char conteudo[]) {
     for (int i = 0; i < atual->qtd_arquivos; i++) {
         Arquivo* arq = atual->arquivos[i];
@@ -152,6 +164,7 @@ void echo(char nome[], char conteudo[]) {
     printf("Arquivo não encontrado.\n");
 }
 
+// Lê o conteúdo de um arquivo acessando os blocos alocados
 void cat(char nome[]) {
     for (int i = 0; i < atual->qtd_arquivos; i++) {
         Arquivo* arq = atual->arquivos[i];
@@ -172,6 +185,7 @@ void cat(char nome[]) {
     printf("Arquivo não encontrado.\n");
 }
 
+// Remove um arquivo, liberando seus blocos do "disco"
 void rm(char nome[]) {
     for (int i = 0; i < atual->qtd_arquivos; i++) {
         if (strcmp(atual->arquivos[i]->nome, nome) == 0) {
@@ -190,6 +204,7 @@ void rm(char nome[]) {
     printf("Arquivo não encontrado.\n");
 }
 
+// Altera as permissões de um arquivo usando valores numéricos RWX
 void chmod_simples(char nome[], int rwx) {
     for (int i = 0; i < atual->qtd_arquivos; i++) {
         if (strcmp(atual->arquivos[i]->nome, nome) == 0) {
@@ -203,6 +218,7 @@ void chmod_simples(char nome[], int rwx) {
     printf("Arquivo não encontrado.\n");
 }
 
+// MAIN
 int main() {
     init_fs();
     char comando[100], arg1[100], arg2[1024];
