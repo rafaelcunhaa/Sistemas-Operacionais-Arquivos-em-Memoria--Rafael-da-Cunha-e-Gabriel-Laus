@@ -12,7 +12,4 @@ Curso: Ciência da Computação – 5º Período
 ```bash
 gcc -o mini_fs mini_fs.c
 
----
-
-```bash
 ./mini_fs
